@@ -39,15 +39,15 @@ kubectl expose pod mongo-0 --port 27017 --target-port 27017 --type LoadBalancer
 use inventory
 
 db.citywithpopulation.insertMany([
-   { city: "Sydney", population: "10 Million" },
-   { city: "New-York", population: "13 Million" },
-   { city: "London", population: "10 Million" },
-   { city: "Washington", population: "17 Million" },
-   { city: "Paris", population: "19 Million" },
-   { city: "Munich", population: "9 Million" },
-   { city: "Beijing", population: "21 Million" },
-   { city: "Mumbai", population: "20 Million" },
-   { city: "Mexico-city", population: "13 Million" }
+   { City: "Sydney", Population: "10 Million" },
+   { City: "New-York", POopulation: "13 Million" },
+   { City: "London", Population: "10 Million" },
+   { City: "Washington", Population: "17 Million" },
+   { City: "Paris", Population: "19 Million" },
+   { City: "Munich", Population: "9 Million" },
+   { City: "Beijing", Population: "21 Million" },
+   { City: "Mumbai", Population: "20 Million" },
+   { City: "Mexico-city", Population: "13 Million" }
 ]);
 
 db.citywithpopulation.find({}).pretty()
