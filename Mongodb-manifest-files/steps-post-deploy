@@ -1,0 +1,53 @@
+kubectl exec -it mongo-0 -- mongo
+rs.initiate()
+var cfg = rs.conf()
+cfg.members[0].host="mongo-0.mongo:27017"
+rs.reconfig(cfg)
+rs.status()
+rs.add("mongo-1.mongo:27017")
+rs.add("mongo-2.mongo:27017")
+rs.status()
+show dbs
+use inventory
+(Database will be created and you will be switched in that database)
+Now create a user with username userABC and password user123, run the below code in command prompt.
+
+db.createUser(
+  {
+    user: "mongodbadmin",
+    pwd: "1qazxsw2",
+    roles: [
+       { role: "readWrite", db: "inventory" },
+       { role: "read", db: "reporting" }
+    ]
+  }
+)
+exit
+
+kubectl run mango --rm -it --image mongo -- sh
+mongo mongodb://mongo-0.mongo,mongo-1.mongo,mongo-2.mongo
+rs.status()
+
+mongo mongodb://mongo-0.mongo,mongo-1.mongo,mongo-2.mongo --eval 'rs.status()' | grep name
+
+mongo mongodb://mongo-0.mongo,mongo-1.mongo,mongo-2.mongo/admin?replicaSet=rs0
+
+show dbs
+
+kubectl expose pod mongo-0 --port 27017 --target-port 27017 --type LoadBalancer
+
+use inventory
+
+db.citywithpopulation.insertMany([
+   { city: "Sydney", population: "10 Million" },
+   { city: "New-York", population: "13 Million" },
+   { city: "London", population: "10 Million" },
+   { city: "Washington", population: "17 Million" },
+   { city: "Paris", population: "19 Million" },
+   { city: "Munich", population: "9 Million" },
+   { city: "Beijing", population: "21 Million" },
+   { city: "Mumbai", population: "20 Million" },
+   { city: "Mexico-city", population: "13 Million" }
+]);
+
+db.citywithpopulation.find({}).pretty()
