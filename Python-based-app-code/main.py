@@ -64,7 +64,7 @@ cipher_engine = create_cipher_engine()
 # cryptography entries end here
 
 # mongodb connector and cred details
-mongo_client = MongoClient("mongodb://{LB IP of the mongodb svc}:{27017}/".format("mongo_host", 27017))
+mongo_client = MongoClient("mongodb://{mongodb exposed svc name}:{27017}/".format("mongo_host", 27017))
 db_connector = mongo_client.get_database("mongo_database")
 db_connector.authenticate(os.environ["mongo_user"], decrypt(os.environ["mongo_password"]))
 
