@@ -16,7 +16,7 @@ spec:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: size
+        - key: node
           operator: In
           values:
-            - large
+            - mongodbnode
