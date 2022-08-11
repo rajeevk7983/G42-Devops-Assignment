@@ -72,12 +72,13 @@ app = Flask(__flask-app__)
 api = Api(app)
 population_model = api.model('City Population', {'Population': fields.String('City Poplulation')})
 
+# health check end point
 @api.route('/health', methods=['GET'])
 class Health(Resource):
     def get(self):
         return "OK"
 
-
+# get, query, update API calls end point listening from front end application
 @api.route('/population/<key>', methods=['GET', 'POST', 'PUT'])
 class Population(Resource):
     @api.expect(population_model)
