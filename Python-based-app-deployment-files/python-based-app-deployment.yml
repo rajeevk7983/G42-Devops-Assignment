@@ -5,6 +5,7 @@ metadata:
   labels:
     app: app-flask
   name: app-flask
+  namespace: app-flask
 spec:
   replicas: 3
   selector:
