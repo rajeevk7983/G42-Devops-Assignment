@@ -34,7 +34,9 @@ mongo mongodb://mongo-0.mongo,mongo-1.mongo,mongo-2.mongo/admin?replicaSet=rs0
 
 show dbs
 
-kubectl expose pod mongo-0 --port 27017 --target-port 27017 --type LoadBalancer
+kubectl expose deploy mongo --port 27017 --target-port 27017
+(this will expose to type ClusterIP. This type is fine as the database is a backend and need not to be exposed to outside world. Only front end to be
+exposed to outside)
 
 use inventory
 
