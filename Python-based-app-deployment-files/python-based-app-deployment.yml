@@ -18,7 +18,14 @@ spec:
         app: app-flask
     spec:
       containers:
-      - image: app-flask-user1/dtr.example.com:v1
+      - image: app-flask-user1/dtr.example.com:v1  
+        env:
+        - name: mongo_user
+          value: "mongodbadmin"
+        - name: mongo_password
+          value: "1qazxsw2"
+        - name: PORT
+          value: "5000"
         name: kubernetes
         resources: {}
 status: {}
