@@ -1,7 +1,9 @@
-kind: StorageClass
 apiVersion: storage.k8s.io/v1
+kind: StorageClass
 metadata:
-  name: mongodb-storageclass
-provisioner: kubernetes.io/no-provisioner
+  name: ssd-mongodb-SC
+provisioner: kubernetes.io/gce-pd
 volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
+parameters:
+  type: pd-ssd
