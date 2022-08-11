@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: app_flask
-  name: app_flask
+    app: app-flask
+  name: app-flask
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: app_flask
+      app: app-flask
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: app_flask
+        app: app-flask
     spec:
       containers:
       - image: app-flask-user1/dtr.example.com:v1
