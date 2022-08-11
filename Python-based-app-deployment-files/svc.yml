@@ -3,15 +3,15 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: app_flask
-  name: app_flask-service
+    app: app-flask
+  name: app-flask-service
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: app_flask
+    app: app-flask
   type: LoadBalancer
 status:
   loadBalancer: {}
