@@ -3,22 +3,22 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: demo
-  name: demo
+    app: app_flask
+  name: app_flask
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: demo
+      app: app_flask
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: demo
+        app: app_flask
     spec:
       containers:
-      - image: rahulwagh17/kubernetes:jhooq-k8s-springboot
+      - image: app_flask_user1/dtr.example.com:v1
         name: kubernetes
         resources: {}
 status: {}
