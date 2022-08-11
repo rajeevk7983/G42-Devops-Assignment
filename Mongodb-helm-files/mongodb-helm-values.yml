@@ -53,7 +53,7 @@ clusterDomain: cluster.local
 ##       app.kubernetes.io/managed-by: Helm
 ##       app.kubernetes.io/name: mongodb
 ##   spec:
-##     type: LoadBalancer
+##     type: ClusterIP
 ##     externalTrafficPolicy: Cluster
 ##     ports:
 ##       - name: mongodb
