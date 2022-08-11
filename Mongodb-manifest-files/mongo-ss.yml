@@ -31,7 +31,8 @@ spec:
   - metadata:
       name: mongo-volume
     spec:
-      accessModes: [ ReadWriteOnce ]
+      storageClassName: ssd-mongodb-SC
+      accessModes: [ ReadWriteMany ]
       resources:
         requests:
-          storage: 1Gi 
+          storage: 3Gi
