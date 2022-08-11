@@ -2,11 +2,10 @@ import os
 from flask import Flask
 from pymongo import MongoClient
 from flask_restplus import Api, fields, Resource
-
+## for password cryptography encryption
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.padding import PKCS7
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-
 
 def create_cipher_engine():
     """
@@ -62,15 +61,16 @@ def decrypt(encrypted):
 
 
 cipher_engine = create_cipher_engine()
+# cryptography entries end here
 
+# mongodb connector and cred details
 mongo_client = MongoClient("mongodb://{LB IP of the mongodb svc}:{27017}/".format("mongo_host", 27017))
 db_connector = mongo_client.get_database("mongo_database")
 db_connector.authenticate(os.environ["mongo_user"], decrypt(os.environ["mongo_password"]))
 
-app = Flask(__name__)
+app = Flask(__flask-app__)
 api = Api(app)
 population_model = api.model('City Population', {'Population': fields.String('City Poplulation')})
-
 
 @api.route('/health', methods=['GET'])
 class Health(Resource):
@@ -94,10 +94,6 @@ class Population(Resource):
     @api.expect(population_model)
     def put(self, key):
         db_connector["Population"].update({"name": key}, {"$set": api.payload}, upsert=True)
-
-# print(encrypt("password"))
-# print(decrypt("f88e90caee4a4a8376358f6eba2e6315"))
-
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
