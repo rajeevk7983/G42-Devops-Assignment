@@ -115,3 +115,15 @@ STEPS
     
  35) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
     insert entries, create user and pwd, create database cluster etc)
+    
+  ################# testing #################
+  
+36) Hit the exposed app-flash svc LB external IP with port 5000
+    http://<app-flask-service-LBp-external-ip>:5000/health
+    it should return "OK"
+    
+    http://<app-flask-service-LBp-external-ip>:5000/population/Washington
+    it should return "17 Million"
+    
+    http://<app-flask-service-LBp-external-ip>:5000/population/Paris
+    it should return "19 Million"
