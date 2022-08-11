@@ -81,6 +81,9 @@ STEPS
     (This will list the sc created)
     Most of the enterprise set up has dynamic pv provisioning, in which case PV will be create automatically based on claim request. 
     In that case no need to create PV
+26) Create a new ns and switch context
+    # kubectl create ns mongodb
+    # kubectl config set-context $(kubectl config current-context) --namespace=mongodb
 26) create svc
     # kubectl create -f mongo-headless-svc
     # kubectl get svc
