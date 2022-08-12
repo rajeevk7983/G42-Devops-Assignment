@@ -7,3 +7,10 @@ MarkupSafe==2.0.1
 Werkzeug==2.0.2
 gunicorn==20.1.0
 pymongo
+requests
+utils
+flask
+flask_restplus
+flask_jwt_extended
+flask_httpauth
+pathlib2
