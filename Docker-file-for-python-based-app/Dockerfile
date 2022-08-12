@@ -1,5 +1,5 @@
-# start by pulling the python image
-# FROM python:3.8-alpine
+# start by pulling the base os image (or you can pull a python image)
+
 FROM centos:latest
 
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
