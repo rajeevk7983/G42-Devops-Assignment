@@ -13,7 +13,7 @@ STEPS
 2) Create a direcory named python-app-code and switch to that directory
    # mkdir python-app-code
    # cd python-app-code
-3) Copy the docker file "docker-file-python" & "required-modules-list.txt" from git repo or zip folder to your current directory 
+3) Copy the docker file "Dockerfile" & "required-modules-list.txt" from git repo or zip folder to your current directory 
    (docker file is under "docker-file-python" dir path)
 4) Copy the main.py files from git repo or zip folder to your current directory (file is under "Python-based-app-code" dir path)
 5) Lets build the image with docker image build
@@ -24,7 +24,9 @@ STEPS
    # docker run -p 5000:5000 -d app-flask
 8) List the container
    # docker ps
-9) Remove the container
+9) Check for any errors in the log 
+   # docker logs <container id>
+9) Remove the container if its running. Mostly it will be exited.
    # docker rm <container id> 
    container id can be taken from docker ps command
 10) Once the image is built and tested, we can push it to the local image repository after tagging
@@ -32,101 +34,106 @@ STEPS
    # docker push <repo-user>/<repo-name>:<tag>
    Lets assume that our pushed image name is "app-flask-user1/dtr.example.com:v1". We will be using this image to buid our application in 
    the deployment manifest and/or helm deployment file
-11) Copy the deployment file "python-based-app-deployment.yml" and "svc.yml" from git repo or zip folder to your current directory 
-    (file is under "Python-based-app-deployment-files" folder)
-12) Login to the kubernetes cluster with the cluster admin privileges and switch to the correct cluster context
-    # kubectl config use-context <cluster-name>
-13) To test the deployment, create it using :
-   # kubectl create ns app-flask 
-    (this will create new ns named app-flask)
-   # kubectl config set-context $(kubectl config current-context) --namespace=app-flask
-    (switch to cluster context and ns)
-   # kubectl apply -f python-based-app-deployment.yml
-14) List the deployement and pods using (Lets create a namespace named app-flask)
-   # kubectl get po -n app-flask
-   # kubectl get deploy
-15) Create the service using:
-  # kubectl apply -f svc.yml
-16) Check the svc using and make sure that the external IP is shown as the type is load balancer
-  # kubectl get svc
-17) Delete the svc and deployment
-  # kubectl delete -f svc.yml
-  # kubectl delete -f python-based-app-deployment.yml
-
-##### package into helm ########
-
-18) Next step is converting the kubernetes yaml to helm chart. Create the chart template using
-    # helm create app-flask-chart
-19) The file tree structure and updated files can be seen under directory "Python-based-app-helm-files" in the gitrepo or zipped folder. 
-    The important file to be modified are Chart.yml, values.yml and deployment.yaml (under templates dir). 
-    The modified file with the app-name, imagename and port number, svc type etc is   already there.
-20) Verify the conversion of yaml with helm template command:
-   # helm template app-flask-chart
-   This will list the deoployment and svc yaml definitions . Verify the image name and port number reflects correctly
-21) Verify for any syntactical errors using
-    # helm lint app-flask-chart
-    it should show as 0 chart failed
-22) Install / run the chart using:
-    helm install k8s-app-flask-chart app-flask-chart
-23) Verify the kubernetes objects like pods, deployments and svcs are created using:
-    # kubectl get all
+   
 
 ###### Build and deploy the mongodb stateful sets #######
 
-24) Copy all the files under "Mongodb-manifest-files" directory to the current directory
-25) Create storage class
+11) Copy all the files under "Mongodb-manifest-files" directory to the current directory
+12) Create storage class
     # kubectl create -f storage-class.yml 
     (as its database I created a sc with ssd for better IO throughput and used GCE ssd storage class just as an example assuming this is GKE K8S cluster)
     # kubectl get sc 
     (This will list the sc created)
     Most of the enterprise set up has dynamic pv provisioning, in which case PV will be create automatically based on claim request. 
     In that case no need to create PV
-26) Create a new ns and switch context
+13) Create a new ns and switch context
     # kubectl create ns mongodb
     # kubectl config set-context $(kubectl config current-context) --namespace=mongodb
-26) create svc
+14) create svc
     # kubectl create -f mongo-headless-svc
     # kubectl get svc
-27) create statefulsets
+15) create statefulsets
    # kubectl create -f mongo-ss.yml
    # kubectl get statefulsets (wait for the 3 replicas of statefulsets to be up and running)
 
-28) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
+16) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
     insert entries, create user and pwd, create database cluster etc)
 
-29) Remove the deployed objects using:
+17) Remove the deployed objects using:
     # kubectl delete -f mongo-headless-svc
     # kubectl create -f mongo-ss.yml
 
 ########## Package the mongodb into helm chart #########
 
-30) Add the bitnami helm chart repo
+18) Add the bitnami helm chart repo
 
     # helm repo add bitnami https://charts.bitnami.com/bitnami
     
-31) Export the values to file
+19) Export the values to file
     helm show values bitnami/mongodb > mongo-values.yml
     
-32) Edit the mongo-values.yml and make the changes 
+20) Edit the mongo-values.yml and make the changes 
    (download the file 'mongodb-helm-values.yml' under 'Mongodb-helm-files' directory from zip files or git  repo. That file has the edited entry uptodate)
    
-33) Deploy the mongodb related kubernetes objects using helm chart using:
+21) Deploy the mongodb related kubernetes objects using helm chart using:
     # helm install my-mongo-db bitnami/mongodb
     
-34) wait for the objects to be created and check:
+22) wait for the objects to be created and check:
     # kubectl get all
     
- 35) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
+ 23) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
     insert entries, create user and pwd, create database cluster etc)
+ 
+ ######### build flask-app ##############
+ 
+ 24) Copy the deployment file "python-based-app-deployment.yml" and "svc.yml" from git repo or zip folder to your current directory 
+    (file is under "Python-based-app-deployment-files" folder)
+25) Login to the kubernetes cluster with the cluster admin privileges and switch to the correct cluster context
+    # kubectl config use-context <cluster-name>
+26) To test the deployment, create it using :
+   # kubectl create ns app-flask 
+    (this will create new ns named app-flask)
+   # kubectl config set-context $(kubectl config current-context) --namespace=app-flask
+    (switch to cluster context and ns)
+   # kubectl apply -f python-based-app-deployment.yml
+27) List the deployement and pods using (Lets create a namespace named app-flask)
+   # kubectl get po -n app-flask
+   # kubectl get deploy
+28) Create the service using:
+  # kubectl apply -f svc.yml
+29) Check the svc using and make sure that the external IP is shown as the type is load balancer
+  # kubectl get svc
+30) Delete the svc and deployment
+  # kubectl delete -f svc.yml
+  # kubectl delete -f python-based-app-deployment.yml
+
+##### package into helm ########
+
+31) Next step is converting the kubernetes yaml to helm chart. Create the chart template using
+    # helm create app-flask-chart
+32) The file tree structure and updated files can be seen under directory "Python-based-app-helm-files" in the gitrepo or zipped folder. 
+    The important file to be modified are Chart.yml, values.yml and deployment.yaml (under templates dir). 
+    The modified file with the app-name, imagename and port number, svc type etc is   already there.
+33) Verify the conversion of yaml with helm template command:
+   # helm template app-flask-chart
+   This will list the deoployment and svc yaml definitions . Verify the image name and port number reflects correctly
+34) Verify for any syntactical errors using
+    # helm lint app-flask-chart
+    it should show as 0 chart failed
+35) Install / run the chart using:
+    helm install k8s-app-flask-chart app-flask-chart
+36) Verify the kubernetes objects like pods, deployments and svcs are created using:
+    # kubectl get all
     
   ################# testing #################
   
-36) Hit the exposed app-flash svc LB external IP with port 5000
-    http://<app-flask-service-LBp-external-ip>:5000/health
-    it should return "OK"
-    
-    http://<app-flask-service-LBp-external-ip>:5000/population/Washington
-    it should return "17 Million"
-    
-    http://<app-flask-service-LBp-external-ip>:5000/population/Paris
-    it should return "19 Million"
+37) refer the steps in test.py under folder "Python-based-app-code"
+
+import requests
+
+# print(requests.post('http://<exposed LB externl IP of the flask-app>:5000/population/Melbourne', json={"population": 20}).text)
+# print(requests.put('http://<exposed LB externl IP of the flask-app>:5000/population/Melbourne', json={"population": 20}).text)
+# print(requests.get('http://<exposed LB externl IP of the flask-app>:5000/population/Melbourne').text)
+print(requests.get('http://<exposed LB externl IP of the flask-app>:5000/health').text)
+
+We can run it via postman or via python command "python3 test.py"
