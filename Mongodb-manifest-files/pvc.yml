@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: mongodb-pvc
 spec:
-  storageClassName: mongodb-storageclass
+  storageClassName: ssd-mongodb-sc
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
