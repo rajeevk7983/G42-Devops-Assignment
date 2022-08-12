@@ -21,6 +21,6 @@ RUN pip3 install --upgrade pip && pip3 install -r required-moldules-list.txt
 COPY . /application
 
 # configure the container to run in an executed manner
-ENTRYPOINT [ "python" ]
+ENTRYPOINT [ "python3" ]
 
 CMD ["main.py" ]
