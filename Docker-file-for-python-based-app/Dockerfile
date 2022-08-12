@@ -1,5 +1,10 @@
 # start by pulling the python image
-FROM python:3.8-alpine
+# FROM python:3.8-alpine
+FROM centos:latest
+
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
 
 # copy the requirements file into the image
 COPY ./required-moldules-list.txt /application/required-moldules-list.txt
