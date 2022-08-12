@@ -6,6 +6,7 @@ RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
 RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 RUN yum update -y
 RUN yum install wget redhat-lsb-core python3-pip python3 git -y
+RUN yum -y install epel-release libcouchbase-devel libcouchbase2-bin gcc gcc-c++ python3-devel
 
 # copy the requirements file into the image
 COPY ./required-moldules-list.txt /application/required-moldules-list.txt
