@@ -32,7 +32,7 @@ spec:
   - metadata:
       name: mongo-volume
     spec:
-      storageClassName: ssd-mongodb-SC
+      storageClassName: ssd-mongodb-sc
       accessModes: [ ReadWriteMany ]
       resources:
         requests:
