@@ -2,7 +2,7 @@
 FROM python:3.8-alpine
 
 # copy the requirements file into the image
-COPY ./required-moldules-list.txt /app/required-moldules-list.txt
+COPY ./required-moldules-list.txt /application/required-moldules-list.txt
 
 # switch working directory
 WORKDIR /application
