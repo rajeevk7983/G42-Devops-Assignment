@@ -14,5 +14,5 @@ flask_jwt_extended==4.2.1
 flask_httpauth==4.4.0
 pathlib2==2.3.5
 uwsgi==2.0.19.1
-Werkzeug==2.0.1
+Werkzeug==0.16.1
 cryptography==3.4.8
