@@ -72,69 +72,69 @@ STEPS
 
 ########## Package the mongodb into helm chart #########
 
-18) Add the bitnami helm chart repo
+21) Add the bitnami helm chart repo
 
     # helm repo add bitnami https://charts.bitnami.com/bitnami
     
-19) Export the values to file
+22) Export the values to file
     helm show values bitnami/mongodb > mongo-values.yml
     
-20) Edit the mongo-values.yml and make the changes 
+23) Edit the mongo-values.yml and make the changes 
    (download the file 'mongodb-helm-values.yml' under 'Mongodb-helm-files' directory from zip files or git  repo. That file has the edited entry uptodate)
    
-21) Deploy the mongodb related kubernetes objects using helm chart using:
+24) Deploy the mongodb related kubernetes objects using helm chart using:
     # helm install my-mongo-db bitnami/mongodb
     
-22) wait for the objects to be created and check:
+24) wait for the objects to be created and check:
     # kubectl get all
     
- 23) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
+25) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
     insert entries, create user and pwd, create database cluster etc)
  
  ######### build flask-app ##############
  
- 24) Copy the deployment file "python-based-app-deployment.yml" and "svc.yml" from git repo or zip folder to your current directory 
+26) Copy the deployment file "python-based-app-deployment.yml" and "svc.yml" from git repo or zip folder to your current directory 
     (file is under "Python-based-app-deployment-files" folder)
-25) Login to the kubernetes cluster with the cluster admin privileges and switch to the correct cluster context
+27) Login to the kubernetes cluster with the cluster admin privileges and switch to the correct cluster context
     # kubectl config use-context <cluster-name>
-26) To test the deployment, create it using :
+28) To test the deployment, create it using :
    # kubectl create ns app-flask 
     (this will create new ns named app-flask)
    # kubectl config set-context $(kubectl config current-context) --namespace=app-flask
     (switch to cluster context and ns)
    # kubectl apply -f python-based-app-deployment.yml
-27) List the deployement and pods using (Lets create a namespace named app-flask)
+29) List the deployement and pods using (Lets create a namespace named app-flask)
    # kubectl get po -n app-flask
    # kubectl get deploy
-28) Create the service using:
+30) Create the service using:
   # kubectl apply -f svc.yml
-29) Check the svc using and make sure that the external IP is shown as the type is load balancer
+31) Check the svc using and make sure that the external IP is shown as the type is load balancer
   # kubectl get svc
-30) Delete the svc and deployment
+32) Delete the svc and deployment
   # kubectl delete -f svc.yml
   # kubectl delete -f python-based-app-deployment.yml
 
 ##### package into helm ########
 
-31) Next step is converting the kubernetes yaml to helm chart. Create the chart template using
+33) Next step is converting the kubernetes yaml to helm chart. Create the chart template using
     # helm create app-flask-chart
-32) The file tree structure and updated files can be seen under directory "Python-based-app-helm-files" in the gitrepo or zipped folder. 
+34) The file tree structure and updated files can be seen under directory "Python-based-app-helm-files" in the gitrepo or zipped folder. 
     The important file to be modified are Chart.yml, values.yml and deployment.yaml (under templates dir). 
     The modified file with the app-name, imagename and port number, svc type etc is   already there.
-33) Verify the conversion of yaml with helm template command:
+34) Verify the conversion of yaml with helm template command:
    # helm template app-flask-chart
    This will list the deoployment and svc yaml definitions . Verify the image name and port number reflects correctly
-34) Verify for any syntactical errors using
+35) Verify for any syntactical errors using
     # helm lint app-flask-chart
     it should show as 0 chart failed
-35) Install / run the chart using:
+36) Install / run the chart using:
     helm install k8s-app-flask-chart app-flask-chart
-36) Verify the kubernetes objects like pods, deployments and svcs are created using:
+37) Verify the kubernetes objects like pods, deployments and svcs are created using:
     # kubectl get all
     
   ################# testing #################
   
-37) refer the steps in test.py under folder "Python-based-app-code"
+38) refer the steps in test.py under folder "Python-based-app-code"
 
 import requests
 
