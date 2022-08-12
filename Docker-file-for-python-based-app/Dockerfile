@@ -14,7 +14,7 @@ COPY ./required-moldules-list.txt /application/required-moldules-list.txt
 WORKDIR /application
 
 # install the dependencies and packages in the requirements file
-RUN pip install -r required-moldules-list.txt
+RUN pip3 install -r required-moldules-list.txt
 
 # copy every content from the local file to the image
 COPY . /application
