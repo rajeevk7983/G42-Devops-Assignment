@@ -36,30 +36,37 @@ STEPS
    the deployment manifest and/or helm deployment file
    
 
-###### Build and deploy the mongodb stateful sets #######
+###### Build and deploy the mongodb stateful sets first before the app gets deployed #######
 
 11) Copy all the files under "Mongodb-manifest-files" directory to the current directory
-12) Create storage class
+12) Create a new ns and switch context
+    # kubectl create ns mongodb
+    # kubectl config set-context $(kubectl config current-context) --namespace=mongodb
+13) Create storage class
     # kubectl create -f storage-class.yml 
     (as its database I created a sc with ssd for better IO throughput and used GCE ssd storage class just as an example assuming this is GKE K8S cluster)
     # kubectl get sc 
     (This will list the sc created)
     Most of the enterprise set up has dynamic pv provisioning, in which case PV will be create automatically based on claim request. 
     In that case no need to create PV
-13) Create a new ns and switch context
-    # kubectl create ns mongodb
-    # kubectl config set-context $(kubectl config current-context) --namespace=mongodb
-14) create svc
+14) Label the node
+    # kubectl label node worker-1 size=large
+15) Create the pv using pv.yml file (in an enterprise setup creating pv is not needed as it will be dynamic provisioning)
+    # kubectl create -f pv.yml
+16) create the pvc
+    # kubectl create -f pvc.yml
+
+17) create svc
     # kubectl create -f mongo-headless-svc
     # kubectl get svc
-15) create statefulsets
+18) create statefulsets
    # kubectl create -f mongo-ss.yml
    # kubectl get statefulsets (wait for the 3 replicas of statefulsets to be up and running)
 
-16) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
+19) Execute the steps mentioned in the "steps-post-deploy" file in the Mongodb-manifest-files directory to create the db, 
     insert entries, create user and pwd, create database cluster etc)
 
-17) Remove the deployed objects using:
+20) Remove the deployed objects using:
     # kubectl delete -f mongo-headless-svc
     # kubectl create -f mongo-ss.yml
 
