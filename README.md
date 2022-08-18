@@ -68,7 +68,7 @@ STEPS
 
 20) Remove the deployed objects using:
     # kubectl delete -f mongo-headless-svc
-    # kubectl create -f mongo-ss.yml
+    # kubectl delete -f mongo-ss.yml
 
 ########## Package the mongodb into helm chart #########
 
